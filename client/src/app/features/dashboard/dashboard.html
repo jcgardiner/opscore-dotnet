@@ -1,0 +1,156 @@
+<div class="dashboard">
+  <div class="page-header">
+    <h2 class="page-title">Operations Dashboard</h2>
+    <p class="page-subtitle">Field Operations & Compliance Overview</p>
+  </div>
+
+  @if (loading) {
+    <div class="loading">Loading dashboard data...</div>
+  }
+
+  @if (error) {
+    <div class="error-banner">{{ error }}</div>
+  }
+
+  @if (!loading) {
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-icon sites">🏭</div>
+        <div class="kpi-info">
+          <span class="kpi-value">{{ sites.length }}</span>
+          <span class="kpi-label">Total Sites</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon assets">🔧</div>
+        <div class="kpi-info">
+          <span class="kpi-value">{{ activeAssets }}</span>
+          <span class="kpi-label">Operational Assets</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon personnel">👤</div>
+        <div class="kpi-info">
+          <span class="kpi-value">{{ personnel.length }}</span>
+          <span class="kpi-label">Active Personnel</span>
+        </div>
+      </div>
+      <div class="kpi-card warning">
+        <div class="kpi-icon incidents">⚠️</div>
+        <div class="kpi-info">
+          <span class="kpi-value">{{ openIncidents }}</span>
+          <span class="kpi-label">Open Incidents</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon workorders">📋</div>
+        <div class="kpi-info">
+          <span class="kpi-value">{{ openWorkOrders }}</span>
+          <span class="kpi-label">Open Work Orders</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon inspections">✅</div>
+        <div class="kpi-info">
+          <span class="kpi-value">{{ scheduledInspections }}</span>
+          <span class="kpi-label">Scheduled Inspections</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Incidents Table -->
+    <div class="section">
+      <div class="section-header">
+        <h3 class="section-title">Recent Incidents</h3>
+        <a routerLink="/incidents" class="section-link">View All</a>
+      </div>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Site</th>
+              <th>Severity</th>
+              <th>Status</th>
+              <th>Occurred</th>
+              <th>Reported By</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (incident of incidents.slice(0, 5); track incident.incidentId) {
+              <tr>
+                <td>{{ incident.title }}</td>
+                <td>{{ incident.siteName }}</td>
+                <td>
+                  <span class="badge" [class]="'badge-' + incident.severity.toLowerCase()">
+                    {{ incident.severity }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge" [class]="'badge-status-' + incident.status.toLowerCase()">
+                    {{ incident.status }}
+                  </span>
+                </td>
+                <td>{{ incident.occurredDate | date:'mediumDate' }}</td>
+                <td>{{ incident.reportedByName }}</td>
+              </tr>
+            }
+            @empty {
+              <tr>
+                <td colspan="6" class="empty-row">No incidents recorded</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Recent Work Orders Table -->
+    <div class="section">
+      <div class="section-header">
+        <h3 class="section-title">Recent Work Orders</h3>
+        <a routerLink="/work-orders" class="section-link">View All</a>
+      </div>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Asset</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Due Date</th>
+              <th>Assigned To</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (wo of workOrders.slice(0, 5); track wo.workOrderId) {
+              <tr>
+                <td>{{ wo.title }}</td>
+                <td>{{ wo.assetName }}</td>
+                <td>
+                  <span class="badge" [class]="'badge-' + wo.priority.toLowerCase()">
+                    {{ wo.priority }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge" [class]="'badge-status-' + wo.status.toLowerCase()">
+                    {{ wo.status }}
+                  </span>
+                </td>
+                <td>{{ wo.dueDate ? (wo.dueDate | date:'mediumDate') : '—' }}</td>
+                <td>{{ wo.assignedToName }}</td>
+              </tr>
+            }
+            @empty {
+              <tr>
+                <td colspan="6" class="empty-row">No work orders recorded</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>
