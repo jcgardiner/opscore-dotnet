@@ -1,1 +1,58 @@
-<p>assets works!</p>
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Assets</h2>
+      <p class="page-subtitle">Equipment, vehicles, and facilities across all sites</p>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="loading">Loading assets...</div>
+  }
+
+  @if (error) {
+    <div class="error-banner">{{ error }}</div>
+  }
+
+  @if (!loading) {
+    <div class="card">
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Asset Name</th>
+              <th>Type</th>
+              <th>Serial Number</th>
+              <th>Site</th>
+              <th>Assigned To</th>
+              <th>Status</th>
+              <th>Last Inspected</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (asset of assets; track asset.assetId) {
+              <tr>
+                <td>{{ asset.assetName }}</td>
+                <td>{{ asset.assetType }}</td>
+                <td class="mono">{{ asset.serialNumber }}</td>
+                <td>{{ asset.siteName }}</td>
+                <td>{{ asset.assignedPersonnelName || '—' }}</td>
+                <td>
+                  <span class="badge" [class]="getStatusClass(asset.status)">
+                    {{ asset.status }}
+                  </span>
+                </td>
+                <td>{{ asset.lastInspectedDate ? (asset.lastInspectedDate | date:'mediumDate') : '—' }}</td>
+              </tr>
+            }
+            @empty {
+              <tr>
+                <td colspan="7" class="empty-row">No assets found</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>
