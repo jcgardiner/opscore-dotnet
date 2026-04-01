@@ -1,1 +1,62 @@
-<p>personnel works!</p>
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Personnel</h2>
+      <p class="page-subtitle">Crew members and staff across all sites</p>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="loading">Loading personnel...</div>
+  }
+
+  @if (error) {
+    <div class="error-banner">{{ error }}</div>
+  }
+
+  @if (!loading) {
+    <div class="card">
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Email</th>
+              <th>Site</th>
+              <th>Clearance</th>
+              <th>Status</th>
+              <th>Since</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (person of personnel; track person.personnelId) {
+              <tr>
+                <td>{{ person.fullName }}</td>
+                <td>{{ person.role }}</td>
+                <td class="mono">{{ person.email }}</td>
+                <td>{{ person.siteName }}</td>
+                <td>
+                  <span class="badge" [class]="getClearanceClass(person.clearance)">
+                    {{ person.clearance }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge" [class]="getStatusClass(person.status)">
+                    {{ person.status }}
+                  </span>
+                </td>
+                <td>{{ person.createdDate | date:'mediumDate' }}</td>
+              </tr>
+            }
+            @empty {
+              <tr>
+                <td colspan="7" class="empty-row">No personnel found</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>
