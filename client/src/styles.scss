@@ -1,1 +1,27 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #1a1f2e;
+  --secondary: #252b3b;
+  --accent: #4f8ef7;
+  --accent-hover: #3a7af0;
+  --text-primary: #f0f4ff;
+  --text-secondary: #8892a4;
+  --border: #2e3548;
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #f87171;
+  --card-bg: #1e2435;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background-color: var(--primary);
+  color: var(--text-primary);
+  height: 100vh;
+  overflow: hidden;
+}
