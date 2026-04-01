@@ -1,1 +1,58 @@
-<p>inspections works!</p>
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Inspections</h2>
+      <p class="page-subtitle">Compliance inspections across all assets</p>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="loading">Loading inspections...</div>
+  }
+
+  @if (error) {
+    <div class="error-banner">{{ error }}</div>
+  }
+
+  @if (!loading) {
+    <div class="card">
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>Inspector</th>
+              <th>Standard</th>
+              <th>Scheduled</th>
+              <th>Completed</th>
+              <th>Status</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (inspection of inspections; track inspection.inspectionId) {
+              <tr>
+                <td>{{ inspection.assetName }}</td>
+                <td>{{ inspection.inspectorName }}</td>
+                <td>{{ inspection.complianceStandard }}</td>
+                <td>{{ inspection.scheduledDate | date:'mediumDate' }}</td>
+                <td>{{ inspection.completedDate ? (inspection.completedDate | date:'mediumDate') : '—' }}</td>
+                <td>
+                  <span class="badge" [class]="getStatusClass(inspection.status)">
+                    {{ inspection.status }}
+                  </span>
+                </td>
+                <td class="notes">{{ inspection.notes || '—' }}</td>
+              </tr>
+            }
+            @empty {
+              <tr>
+                <td colspan="7" class="empty-row">No inspections found</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>

@@ -24,7 +24,7 @@ export const routes: Routes = [
   {
     path: 'inspections',
     loadComponent: () =>
-      import('./features/inspections/inspections').then(m => m.Inspections)
+      import('./features/inspections/inspections').then(m => m.InspectionsComponent)
   },
   {
     path: 'work-orders',
