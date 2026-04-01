@@ -1,1 +1,62 @@
-<p>work-orders works!</p>
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Work Orders</h2>
+      <p class="page-subtitle">Maintenance and repair tasks across all assets</p>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="loading">Loading work orders...</div>
+  }
+
+  @if (error) {
+    <div class="error-banner">{{ error }}</div>
+  }
+
+  @if (!loading) {
+    <div class="card">
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Asset</th>
+              <th>Assigned To</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Due Date</th>
+              <th>Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (wo of workOrders; track wo.workOrderId) {
+              <tr>
+                <td>{{ wo.title }}</td>
+                <td>{{ wo.assetName }}</td>
+                <td>{{ wo.assignedToName }}</td>
+                <td>
+                  <span class="badge" [class]="getPriorityClass(wo.priority)">
+                    {{ wo.priority }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge" [class]="getStatusClass(wo.status)">
+                    {{ wo.status }}
+                  </span>
+                </td>
+                <td>{{ wo.dueDate ? (wo.dueDate | date:'mediumDate') : '—' }}</td>
+                <td>{{ wo.createdDate | date:'mediumDate' }}</td>
+              </tr>
+            }
+            @empty {
+              <tr>
+                <td colspan="7" class="empty-row">No work orders found</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>

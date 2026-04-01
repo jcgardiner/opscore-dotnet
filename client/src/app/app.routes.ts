@@ -29,7 +29,7 @@ export const routes: Routes = [
   {
     path: 'work-orders',
     loadComponent: () =>
-      import('./features/work-orders/work-orders').then(m => m.WorkOrders)
+      import('./features/work-orders/work-orders').then(m => m.WorkOrdersComponent)
   },
   {
     path: 'incidents',
