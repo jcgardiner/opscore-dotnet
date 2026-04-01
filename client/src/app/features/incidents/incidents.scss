@@ -1,0 +1,125 @@
+.page {
+  max-width: 1400px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.page-subtitle {
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.loading {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  padding: 2rem 0;
+}
+
+.error-banner {
+  background-color: rgba(248, 113, 113, 0.15);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+
+  th {
+    text-align: left;
+    padding: 0.65rem 1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 0.75rem 1rem;
+    color: var(--text-primary);
+    border-bottom: 1px solid rgba(46, 53, 72, 0.5);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover td {
+    background-color: rgba(79, 142, 247, 0.05);
+    cursor: pointer;
+  }
+}
+
+.empty-row {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 2rem !important;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+
+  &.badge-success {
+    background: rgba(52, 211, 153, 0.15);
+    color: var(--success);
+  }
+
+  &.badge-warning {
+    background: rgba(251, 191, 36, 0.15);
+    color: var(--warning);
+  }
+
+  &.badge-danger {
+    background: rgba(248, 113, 113, 0.15);
+    color: var(--danger);
+  }
+
+  &.badge-high {
+    background: rgba(251, 146, 60, 0.15);
+    color: #fb923c;
+  }
+
+  &.badge-info {
+    background: rgba(79, 142, 247, 0.15);
+    color: var(--accent);
+  }
+
+  &.badge-neutral {
+    background: rgba(136, 146, 164, 0.15);
+    color: var(--text-secondary);
+  }
+}

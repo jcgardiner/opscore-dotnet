@@ -34,7 +34,7 @@ export const routes: Routes = [
   {
     path: 'incidents',
     loadComponent: () =>
-      import('./features/incidents/incidents').then(m => m.Incidents)
+      import('./features/incidents/incidents').then(m => m.IncidentsComponent)
   },
   {
     path: '**',

@@ -1,1 +1,62 @@
-<p>incidents works!</p>
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Incidents</h2>
+      <p class="page-subtitle">Reported incidents and events across all sites</p>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="loading">Loading incidents...</div>
+  }
+
+  @if (error) {
+    <div class="error-banner">{{ error }}</div>
+  }
+
+  @if (!loading) {
+    <div class="card">
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Site</th>
+              <th>Reported By</th>
+              <th>Severity</th>
+              <th>Status</th>
+              <th>Occurred</th>
+              <th>Resolved</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (incident of incidents; track incident.incidentId) {
+              <tr>
+                <td>{{ incident.title }}</td>
+                <td>{{ incident.siteName }}</td>
+                <td>{{ incident.reportedByName }}</td>
+                <td>
+                  <span class="badge" [class]="getSeverityClass(incident.severity)">
+                    {{ incident.severity }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge" [class]="getStatusClass(incident.status)">
+                    {{ incident.status }}
+                  </span>
+                </td>
+                <td>{{ incident.occurredDate | date:'mediumDate' }}</td>
+                <td>{{ incident.resolvedDate ? (incident.resolvedDate | date:'mediumDate') : '—' }}</td>
+              </tr>
+            }
+            @empty {
+              <tr>
+                <td colspan="7" class="empty-row">No incidents found</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>
