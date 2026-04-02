@@ -1,0 +1,58 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Sites</h2>
+      <p class="page-subtitle">Operational sites across all sectors</p>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="loading">Loading sites...</div>
+  }
+
+  @if (error) {
+    <div class="error-banner">{{ error }}</div>
+  }
+
+  @if (!loading) {
+    <div class="card">
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Site Name</th>
+              <th>Sector</th>
+              <th>Location</th>
+              <th>Status</th>
+              <th>Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (site of sites; track site.siteId) {
+              <tr>
+                <td>{{ site.siteName }}</td>
+                <td>
+                  <span class="badge" [class]="getSectorClass(site.sectorType)">
+                    {{ site.sectorType }}
+                  </span>
+                </td>
+                <td>{{ site.location }}</td>
+                <td>
+                  <span class="badge" [class]="getStatusClass(site.status)">
+                    {{ site.status }}
+                  </span>
+                </td>
+                <td>{{ site.createdDate | date:'mediumDate' }}</td>
+              </tr>
+            }
+            @empty {
+              <tr>
+                <td colspan="5" class="empty-row">No sites found</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>

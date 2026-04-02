@@ -12,6 +12,7 @@ export class App {
 
   navItems = [
     { label: 'Dashboard', path: '/dashboard', icon: '📊' },
+    { label: 'Sites', path: '/sites', icon: '🏭' },
     { label: 'Assets', path: '/assets', icon: '🔧' },
     { label: 'Personnel', path: '/personnel', icon: '👤' },
     { label: 'Inspections', path: '/inspections', icon: '✅' },
