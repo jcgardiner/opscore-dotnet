@@ -1,0 +1,133 @@
+<div class="page">
+  @if (loading) {
+    <div class="loading">Loading asset details...</div>
+  }
+
+  @if (error) {
+    <div class="error-banner">{{ error }}</div>
+  }
+
+  @if (!loading && details) {
+    <!-- Header -->
+    <div class="page-header">
+      <div>
+        <a routerLink="/assets" class="back-link">← Back to Assets</a>
+        <h2 class="page-title">{{ details.asset.assetName }}</h2>
+        <p class="page-subtitle">{{ details.asset.assetType }} · {{ details.asset.serialNumber }}</p>
+      </div>
+      <div class="header-badges">
+        <span class="badge" [class]="getAssetStatusClass(details.asset.status)">
+          {{ details.asset.status }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="info-grid">
+      <div class="info-card">
+        <span class="info-label">Site</span>
+        <span class="info-value">{{ details.asset.siteName }}</span>
+      </div>
+      <div class="info-card">
+        <span class="info-label">Assigned To</span>
+        <span class="info-value">{{ details.asset.assignedPersonnelName || '—' }}</span>
+      </div>
+      <div class="info-card">
+        <span class="info-label">Last Inspected</span>
+        <span class="info-value">
+          {{ details.asset.lastInspectedDate ? (details.asset.lastInspectedDate | date:'mediumDate') : 'Never' }}
+        </span>
+      </div>
+      <div class="info-card">
+        <span class="info-label">Added</span>
+        <span class="info-value">{{ details.asset.createdDate | date:'mediumDate' }}</span>
+      </div>
+    </div>
+
+    <!-- Inspections Table -->
+    <div class="card">
+      <div class="section-header">
+        <h3 class="section-title">Inspections ({{ details.inspections.length }})</h3>
+      </div>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Standard</th>
+              <th>Inspector</th>
+              <th>Scheduled</th>
+              <th>Completed</th>
+              <th>Status</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (inspection of details.inspections; track inspection.inspectionId) {
+              <tr>
+                <td>{{ inspection.complianceStandard }}</td>
+                <td>{{ inspection.inspectorName }}</td>
+                <td>{{ inspection.scheduledDate | date:'mediumDate' }}</td>
+                <td>{{ inspection.completedDate ? (inspection.completedDate | date:'mediumDate') : '—' }}</td>
+                <td>
+                  <span class="badge" [class]="getInspectionStatusClass(inspection.status)">
+                    {{ inspection.status }}
+                  </span>
+                </td>
+                <td class="notes">{{ inspection.notes || '—' }}</td>
+              </tr>
+            }
+            @empty {
+              <tr>
+                <td colspan="6" class="empty-row">No inspections for this asset</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Work Orders Table -->
+    <div class="card">
+      <div class="section-header">
+        <h3 class="section-title">Work Orders ({{ details.workOrders.length }})</h3>
+      </div>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Assigned To</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Due Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (wo of details.workOrders; track wo.workOrderId) {
+              <tr>
+                <td>{{ wo.title }}</td>
+                <td>{{ wo.assignedToName }}</td>
+                <td>
+                  <span class="badge" [class]="getPriorityClass(wo.priority)">
+                    {{ wo.priority }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge" [class]="getWorkOrderStatusClass(wo.status)">
+                    {{ wo.status }}
+                  </span>
+                </td>
+                <td>{{ wo.dueDate ? (wo.dueDate | date:'mediumDate') : '—' }}</td>
+              </tr>
+            }
+            @empty {
+              <tr>
+                <td colspan="5" class="empty-row">No work orders for this asset</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>

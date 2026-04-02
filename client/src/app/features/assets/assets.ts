@@ -2,10 +2,11 @@ import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AssetService } from '../../core/services/asset.service';
 import { Asset } from '../../core/models/asset.model';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-assets',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './assets.html',
   styleUrl: './assets.scss'
 })

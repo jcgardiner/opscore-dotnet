@@ -77,6 +77,76 @@ namespace server.Controllers
             return Ok(asset);
         }
 
+        // GET: api/assets/5/details
+        [HttpGet("{id}/details")]
+        public async Task<ActionResult> GetAssetDetails(int id)
+        {
+            var asset = await _context.Assets
+                .Include(a => a.Site)
+                .Include(a => a.AssignedPersonnel)
+                .Where(a => a.AssetId == id)
+                .Select(a => new AssetDto
+                {
+                    AssetId = a.AssetId,
+                    AssetName = a.AssetName,
+                    AssetType = a.AssetType,
+                    SerialNumber = a.SerialNumber,
+                    Status = a.Status,
+                    LastInspectedDate = a.LastInspectedDate,
+                    CreatedDate = a.CreatedDate,
+                    SiteId = a.SiteId,
+                    SiteName = a.Site.SiteName,
+                    AssignedPersonnelId = a.AssignedPersonnelId,
+                    AssignedPersonnelName = a.AssignedPersonnel != null
+                        ? $"{a.AssignedPersonnel.FirstName} {a.AssignedPersonnel.LastName}"
+                        : string.Empty
+                })
+                .FirstOrDefaultAsync();
+
+            if (asset == null)
+                return NotFound();
+
+            var inspections = await _context.Inspections
+                .Where(i => i.AssetId == id)
+                .Include(i => i.Inspector)
+                .Select(i => new InspectionDto
+                {
+                    InspectionId = i.InspectionId,
+                    ScheduledDate = i.ScheduledDate,
+                    CompletedDate = i.CompletedDate,
+                    Status = i.Status,
+                    Notes = i.Notes,
+                    ComplianceStandard = i.ComplianceStandard,
+                    CreatedDate = i.CreatedDate,
+                    AssetId = i.AssetId,
+                    AssetName = asset.AssetName,
+                    InspectorId = i.InspectorId,
+                    InspectorName = $"{i.Inspector.FirstName} {i.Inspector.LastName}"
+                })
+                .ToListAsync();
+
+            var workOrders = await _context.WorkOrders
+                .Where(w => w.AssetId == id)
+                .Include(w => w.AssignedTo)
+                .Select(w => new WorkOrderDto
+                {
+                    WorkOrderId = w.WorkOrderId,
+                    Title = w.Title,
+                    Description = w.Description,
+                    Priority = w.Priority,
+                    Status = w.Status,
+                    CreatedDate = w.CreatedDate,
+                    DueDate = w.DueDate,
+                    AssetId = w.AssetId,
+                    AssetName = asset.AssetName,
+                    AssignedToId = w.AssignedToId,
+                    AssignedToName = $"{w.AssignedTo.FirstName} {w.AssignedTo.LastName}"
+                })
+                .ToListAsync();
+
+            return Ok(new { asset, inspections, workOrders });
+        }
+
         // POST: api/assets
         [HttpPost]
         public async Task<ActionResult<AssetDto>> CreateAsset(CreateAssetDto dto)

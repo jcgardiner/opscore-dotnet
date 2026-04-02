@@ -31,7 +31,7 @@
           </thead>
           <tbody>
             @for (asset of assets; track asset.assetId) {
-              <tr>
+              <tr [routerLink]="['/assets', asset.assetId]" style="cursor: pointer">
                 <td>{{ asset.assetName }}</td>
                 <td>{{ asset.assetType }}</td>
                 <td class="mono">{{ asset.serialNumber }}</td>
