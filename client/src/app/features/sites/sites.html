@@ -29,7 +29,7 @@
           </thead>
           <tbody>
             @for (site of sites; track site.siteId) {
-              <tr>
+              <tr [routerLink]="['/sites', site.siteId]" style="cursor: pointer">
                 <td>{{ site.siteName }}</td>
                 <td>
                   <span class="badge" [class]="getSectorClass(site.sectorType)">

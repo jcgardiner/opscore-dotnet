@@ -17,6 +17,11 @@ export const routes: Routes = [
     import('./features/sites/sites').then(m => m.SitesComponent)
   },
   {
+    path: 'sites/:id',
+    loadComponent: () =>
+      import('./features/sites/site-detail').then(m => m.SiteDetailComponent)
+  },
+  {
     path: 'assets',
     loadComponent: () =>
       import('./features/assets/assets').then(m => m.Assets)

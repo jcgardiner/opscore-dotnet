@@ -1,11 +1,12 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { SiteService } from '../../core/services/site.service';
 import { Site } from '../../core/models/site.model';
 
 @Component({
   selector: 'app-sites',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './sites.html',
   styleUrl: './sites.scss'
 })

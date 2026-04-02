@@ -1,0 +1,178 @@
+<div class="page">
+  @if (loading) {
+    <div class="loading">Loading site details...</div>
+  }
+
+  @if (error) {
+    <div class="error-banner">{{ error }}</div>
+  }
+
+  @if (!loading && details) {
+    <!-- Header -->
+    <div class="page-header">
+      <div>
+        <a routerLink="/sites" class="back-link">← Back to Sites</a>
+        <h2 class="page-title">{{ details.site.siteName }}</h2>
+        <p class="page-subtitle">{{ details.site.location }}</p>
+      </div>
+      <div class="header-badges">
+        <span class="badge" [class]="getSectorClass(details.site.sectorType)">
+          {{ details.site.sectorType }}
+        </span>
+        <span class="badge" [class]="getStatusClass(details.site.status)">
+          {{ details.site.status }}
+        </span>
+      </div>
+    </div>
+
+    <!-- KPI Row -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <span class="kpi-value">{{ details.assets.length }}</span>
+        <span class="kpi-label">Total Assets</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-value">{{ details.personnel.length }}</span>
+        <span class="kpi-label">Personnel</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-value">{{ details.incidents.length }}</span>
+        <span class="kpi-label">Incidents</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-value">
+          {{ details.assets.filter(a => a.status === 'Operational').length }}
+        </span>
+        <span class="kpi-label">Operational Assets</span>
+      </div>
+    </div>
+
+    <!-- Assets Table -->
+    <div class="card">
+      <div class="section-header">
+        <h3 class="section-title">Assets</h3>
+      </div>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Asset Name</th>
+              <th>Type</th>
+              <th>Serial Number</th>
+              <th>Assigned To</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (asset of details.assets; track asset.assetId) {
+              <tr>
+                <td>{{ asset.assetName }}</td>
+                <td>{{ asset.assetType }}</td>
+                <td class="mono">{{ asset.serialNumber }}</td>
+                <td>{{ asset.assignedPersonnelName || '—' }}</td>
+                <td>
+                  <span class="badge" [class]="getAssetStatusClass(asset.status)">
+                    {{ asset.status }}
+                  </span>
+                </td>
+              </tr>
+            }
+            @empty {
+              <tr>
+                <td colspan="5" class="empty-row">No assets at this site</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Personnel Table -->
+    <div class="card">
+      <div class="section-header">
+        <h3 class="section-title">Personnel</h3>
+      </div>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Email</th>
+              <th>Clearance</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (person of details.personnel; track person.personnelId) {
+              <tr>
+                <td>{{ person.fullName }}</td>
+                <td>{{ person.role }}</td>
+                <td class="mono">{{ person.email }}</td>
+                <td>
+                  <span class="badge" [class]="getClearanceClass(person.clearance)">
+                    {{ person.clearance }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge" [class]="getStatusClass(person.status)">
+                    {{ person.status }}
+                  </span>
+                </td>
+              </tr>
+            }
+            @empty {
+              <tr>
+                <td colspan="5" class="empty-row">No personnel at this site</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Incidents Table -->
+    <div class="card">
+      <div class="section-header">
+        <h3 class="section-title">Incidents</h3>
+      </div>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Severity</th>
+              <th>Status</th>
+              <th>Occurred</th>
+              <th>Reported By</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (incident of details.incidents; track incident.incidentId) {
+              <tr>
+                <td>{{ incident.title }}</td>
+                <td>
+                  <span class="badge" [class]="getSeverityClass(incident.severity)">
+                    {{ incident.severity }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge" [class]="getIncidentStatusClass(incident.status)">
+                    {{ incident.status }}
+                  </span>
+                </td>
+                <td>{{ incident.occurredDate | date:'mediumDate' }}</td>
+                <td>{{ incident.reportedByName }}</td>
+              </tr>
+            }
+            @empty {
+              <tr>
+                <td colspan="5" class="empty-row">No incidents at this site</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>
