@@ -35,4 +35,11 @@ app.UseCors("AllowAngular");
 app.UseAuthorization();
 app.MapControllers();
 
+// Seed database
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await SeedData.InitializeAsync(context);
+}
+
 app.Run();
