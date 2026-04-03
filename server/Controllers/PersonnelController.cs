@@ -69,6 +69,91 @@ namespace server.Controllers
             return Ok(person);
         }
 
+        // GET: api/personnel/5/details
+        [HttpGet("{id}/details")]
+        public async Task<ActionResult> GetPersonnelDetails(int id)
+        {
+            var person = await _context.Personnel
+                .Include(p => p.Site)
+                .Where(p => p.PersonnelId == id)
+                .Select(p => new PersonnelDto
+                {
+                    PersonnelId = p.PersonnelId,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName,
+                    Email = p.Email,
+                    Role = p.Role,
+                    Clearance = p.Clearance,
+                    Status = p.Status,
+                    CreatedDate = p.CreatedDate,
+                    SiteId = p.SiteId,
+                    SiteName = p.Site.SiteName
+                })
+                .FirstOrDefaultAsync();
+
+            if (person == null)
+                return NotFound();
+
+            var assignedAssets = await _context.Assets
+                .Where(a => a.AssignedPersonnelId == id)
+                .Include(a => a.Site)
+                .Select(a => new AssetDto
+                {
+                    AssetId = a.AssetId,
+                    AssetName = a.AssetName,
+                    AssetType = a.AssetType,
+                    SerialNumber = a.SerialNumber,
+                    Status = a.Status,
+                    LastInspectedDate = a.LastInspectedDate,
+                    CreatedDate = a.CreatedDate,
+                    SiteId = a.SiteId,
+                    SiteName = a.Site.SiteName,
+                    AssignedPersonnelId = a.AssignedPersonnelId,
+                    AssignedPersonnelName = $"{person.FirstName} {person.LastName}"
+                })
+                .ToListAsync();
+
+            var inspections = await _context.Inspections
+                .Where(i => i.InspectorId == id)
+                .Include(i => i.Asset)
+                .Select(i => new InspectionDto
+                {
+                    InspectionId = i.InspectionId,
+                    ScheduledDate = i.ScheduledDate,
+                    CompletedDate = i.CompletedDate,
+                    Status = i.Status,
+                    Notes = i.Notes,
+                    ComplianceStandard = i.ComplianceStandard,
+                    CreatedDate = i.CreatedDate,
+                    AssetId = i.AssetId,
+                    AssetName = i.Asset.AssetName,
+                    InspectorId = i.InspectorId,
+                    InspectorName = $"{person.FirstName} {person.LastName}"
+                })
+                .ToListAsync();
+
+            var workOrders = await _context.WorkOrders
+                .Where(w => w.AssignedToId == id)
+                .Include(w => w.Asset)
+                .Select(w => new WorkOrderDto
+                {
+                    WorkOrderId = w.WorkOrderId,
+                    Title = w.Title,
+                    Description = w.Description,
+                    Priority = w.Priority,
+                    Status = w.Status,
+                    CreatedDate = w.CreatedDate,
+                    DueDate = w.DueDate,
+                    AssetId = w.AssetId,
+                    AssetName = w.Asset.AssetName,
+                    AssignedToId = w.AssignedToId,
+                    AssignedToName = $"{person.FirstName} {person.LastName}"
+                })
+                .ToListAsync();
+
+            return Ok(new { person, assignedAssets, inspections, workOrders });
+        }
+        
         // POST: api/personnel
         [HttpPost]
         public async Task<ActionResult<PersonnelDto>> CreatePersonnel(CreatePersonnelDto dto)

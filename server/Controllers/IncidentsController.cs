@@ -75,6 +75,37 @@ namespace server.Controllers
             return Ok(incident);
         }
 
+        // GET: api/incidents/5/details
+        [HttpGet("{id}/details")]
+        public async Task<ActionResult> GetIncidentDetails(int id)
+        {
+            var incident = await _context.Incidents
+                .Include(i => i.Site)
+                .Include(i => i.ReportedBy)
+                .Where(i => i.IncidentId == id)
+                .Select(i => new IncidentDto
+                {
+                    IncidentId = i.IncidentId,
+                    Title = i.Title,
+                    Description = i.Description,
+                    Severity = i.Severity,
+                    Status = i.Status,
+                    OccurredDate = i.OccurredDate,
+                    ResolvedDate = i.ResolvedDate,
+                    CreatedDate = i.CreatedDate,
+                    SiteId = i.SiteId,
+                    SiteName = i.Site.SiteName,
+                    ReportedById = i.ReportedById,
+                    ReportedByName = $"{i.ReportedBy.FirstName} {i.ReportedBy.LastName}"
+                })
+                .FirstOrDefaultAsync();
+
+            if (incident == null)
+                return NotFound();
+
+            return Ok(new { incident });
+        }
+
         // POST: api/incidents
         [HttpPost]
         public async Task<ActionResult<IncidentDto>> CreateIncident(CreateIncidentDto dto)

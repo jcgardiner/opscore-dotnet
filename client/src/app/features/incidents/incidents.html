@@ -31,7 +31,7 @@
           </thead>
           <tbody>
             @for (incident of incidents; track incident.incidentId) {
-              <tr>
+              <tr [routerLink]="['/incidents', incident.incidentId]" style="cursor: pointer">
                 <td>{{ incident.title }}</td>
                 <td>{{ incident.siteName }}</td>
                 <td>{{ incident.reportedByName }}</td>

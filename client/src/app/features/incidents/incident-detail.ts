@@ -1,37 +1,38 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { IncidentService } from '../../core/services/incident.service';
-import { Incident } from '../../core/models/incident.model';
-import { RouterLink } from '@angular/router';
+import { IncidentDetails } from '../../core/models/incident-details.model';
 
 @Component({
-  selector: 'app-incidents',
+  selector: 'app-incident-detail',
   imports: [CommonModule, RouterLink],
-  templateUrl: './incidents.html',
-  styleUrl: './incidents.scss'
+  templateUrl: './incident-detail.html',
+  styleUrl: './incident-detail.scss'
 })
-export class IncidentsComponent implements OnInit {
+export class IncidentDetailComponent implements OnInit {
+  private route = inject(ActivatedRoute);
   private incidentService = inject(IncidentService);
   private cdr = inject(ChangeDetectorRef);
 
-  incidents: Incident[] = [];
+  details: IncidentDetails | null = null;
   loading = true;
   error = '';
 
   ngOnInit(): void {
-    this.loadIncidents();
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.loadDetails(id);
   }
 
-  loadIncidents(): void {
-    this.loading = true;
-    this.incidentService.getAll().subscribe({
+  loadDetails(id: number): void {
+    this.incidentService.getDetails(id).subscribe({
       next: (data) => {
-        this.incidents = data;
+        this.details = data;
         this.loading = false;
         this.cdr.detectChanges();
       },
       error: () => {
-        this.error = 'Failed to load incidents.';
+        this.error = 'Failed to load incident details.';
         this.loading = false;
         this.cdr.detectChanges();
       }
