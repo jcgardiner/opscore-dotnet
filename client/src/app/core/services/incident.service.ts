@@ -21,8 +21,8 @@ export class IncidentService {
   }
 
   getDetails(id: number): Observable<IncidentDetails> {
-  return this.http.get<IncidentDetails>(`${this.api.baseUrl}/incidents/${id}/details`);
-}
+    return this.http.get<IncidentDetails>(`${this.api.baseUrl}/incidents/${id}/details`);
+  }
 
   create(dto: CreateIncident): Observable<Incident> {
     return this.http.post<Incident>(`${this.api.baseUrl}/incidents`, dto);
