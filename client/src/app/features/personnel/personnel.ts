@@ -2,10 +2,11 @@ import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PersonnelService } from '../../core/services/personnel.service';
 import { Personnel } from '../../core/models/personnel.model';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-personnel',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './personnel.html',
   styleUrl: './personnel.scss'
 })

@@ -31,7 +31,7 @@
           </thead>
           <tbody>
             @for (person of personnel; track person.personnelId) {
-              <tr>
+              <tr [routerLink]="['/personnel', person.personnelId]" style="cursor: pointer">
                 <td>{{ person.fullName }}</td>
                 <td>{{ person.role }}</td>
                 <td class="mono">{{ person.email }}</td>

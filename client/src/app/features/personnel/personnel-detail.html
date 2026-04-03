@@ -1,0 +1,176 @@
+<div class="page">
+  @if (loading) {
+    <div class="loading">Loading personnel details...</div>
+  }
+
+  @if (error) {
+    <div class="error-banner">{{ error }}</div>
+  }
+
+  @if (!loading && details) {
+    <!-- Header -->
+    <div class="page-header">
+      <div>
+        <a routerLink="/personnel" class="back-link">← Back to Personnel</a>
+        <h2 class="page-title">{{ details.person.fullName }}</h2>
+        <p class="page-subtitle">{{ details.person.role }} · {{ details.person.email }}</p>
+      </div>
+      <div class="header-badges">
+        <span class="badge" [class]="getClearanceClass(details.person.clearance)">
+          {{ details.person.clearance }}
+        </span>
+        <span class="badge" [class]="getStatusClass(details.person.status)">
+          {{ details.person.status }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="info-grid">
+      <div class="info-card">
+        <span class="info-label">Site</span>
+        <span class="info-value">{{ details.person.siteName }}</span>
+      </div>
+      <div class="info-card">
+        <span class="info-label">Assigned Assets</span>
+        <span class="info-value">{{ details.assignedAssets.length }}</span>
+      </div>
+      <div class="info-card">
+        <span class="info-label">Inspections Conducted</span>
+        <span class="info-value">{{ details.inspections.length }}</span>
+      </div>
+      <div class="info-card">
+        <span class="info-label">Work Orders</span>
+        <span class="info-value">{{ details.workOrders.length }}</span>
+      </div>
+      <div class="info-card">
+        <span class="info-label">Member Since</span>
+        <span class="info-value">{{ details.person.createdDate | date:'mediumDate' }}</span>
+      </div>
+    </div>
+
+    <!-- Assigned Assets Table -->
+    <div class="card">
+      <div class="section-header">
+        <h3 class="section-title">Assigned Assets ({{ details.assignedAssets.length }})</h3>
+      </div>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Asset Name</th>
+              <th>Type</th>
+              <th>Serial Number</th>
+              <th>Site</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (asset of details.assignedAssets; track asset.assetId) {
+              <tr>
+                <td>{{ asset.assetName }}</td>
+                <td>{{ asset.assetType }}</td>
+                <td class="mono">{{ asset.serialNumber }}</td>
+                <td>{{ asset.siteName }}</td>
+                <td>
+                  <span class="badge" [class]="getAssetStatusClass(asset.status)">
+                    {{ asset.status }}
+                  </span>
+                </td>
+              </tr>
+            }
+            @empty {
+              <tr>
+                <td colspan="5" class="empty-row">No assets assigned</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Inspections Table -->
+    <div class="card">
+      <div class="section-header">
+        <h3 class="section-title">Inspections Conducted ({{ details.inspections.length }})</h3>
+      </div>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>Standard</th>
+              <th>Scheduled</th>
+              <th>Completed</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (inspection of details.inspections; track inspection.inspectionId) {
+              <tr>
+                <td>{{ inspection.assetName }}</td>
+                <td>{{ inspection.complianceStandard }}</td>
+                <td>{{ inspection.scheduledDate | date:'mediumDate' }}</td>
+                <td>{{ inspection.completedDate ? (inspection.completedDate | date:'mediumDate') : '—' }}</td>
+                <td>
+                  <span class="badge" [class]="getInspectionStatusClass(inspection.status)">
+                    {{ inspection.status }}
+                  </span>
+                </td>
+              </tr>
+            }
+            @empty {
+              <tr>
+                <td colspan="5" class="empty-row">No inspections conducted</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Work Orders Table -->
+    <div class="card">
+      <div class="section-header">
+        <h3 class="section-title">Work Orders ({{ details.workOrders.length }})</h3>
+      </div>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Asset</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Due Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (wo of details.workOrders; track wo.workOrderId) {
+              <tr>
+                <td>{{ wo.title }}</td>
+                <td>{{ wo.assetName }}</td>
+                <td>
+                  <span class="badge" [class]="getPriorityClass(wo.priority)">
+                    {{ wo.priority }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge" [class]="getWorkOrderStatusClass(wo.status)">
+                    {{ wo.status }}
+                  </span>
+                </td>
+                <td>{{ wo.dueDate ? (wo.dueDate | date:'mediumDate') : '—' }}</td>
+              </tr>
+            }
+            @empty {
+              <tr>
+                <td colspan="5" class="empty-row">No work orders assigned</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>
