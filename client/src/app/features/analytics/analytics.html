@@ -1,0 +1,107 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Analytics</h2>
+      <p class="page-subtitle">Operational insights across all sites and sectors</p>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="loading">Loading analytics...</div>
+  }
+
+  @if (error) {
+    <div class="error-banner">{{ error }}</div>
+  }
+
+  @if (!loading && overview) {
+    <!-- Row 1 — Donut + two bars -->
+    <div class="chart-grid-3">
+      <div class="card">
+        <h3 class="chart-title">Asset Status</h3>
+        <apx-chart
+          [series]="assetStatusChart.series"
+          [chart]="assetStatusChart.chart"
+          [labels]="assetStatusChart.labels"
+          [colors]="assetStatusChart.colors"
+          [legend]="assetStatusChart.legend"
+          [dataLabels]="assetStatusChart.dataLabels"
+          [plotOptions]="assetStatusChart.plotOptions">
+        </apx-chart>
+      </div>
+      <div class="card">
+        <h3 class="chart-title">Incidents by Severity</h3>
+        <apx-chart
+          [series]="incidentsSeverityChart.series"
+          [chart]="incidentsSeverityChart.chart"
+          [xaxis]="incidentsSeverityChart.xaxis"
+          [yaxis]="incidentsSeverityChart.yaxis"
+          [colors]="incidentsSeverityChart.colors"
+          [grid]="incidentsSeverityChart.grid"
+          [plotOptions]="incidentsSeverityChart.plotOptions"
+          [dataLabels]="incidentsSeverityChart.dataLabels">
+        </apx-chart>
+      </div>
+      <div class="card">
+        <h3 class="chart-title">Work Orders by Priority</h3>
+        <apx-chart
+          [series]="workOrdersPriorityChart.series"
+          [chart]="workOrdersPriorityChart.chart"
+          [xaxis]="workOrdersPriorityChart.xaxis"
+          [yaxis]="workOrdersPriorityChart.yaxis"
+          [colors]="workOrdersPriorityChart.colors"
+          [grid]="workOrdersPriorityChart.grid"
+          [plotOptions]="workOrdersPriorityChart.plotOptions"
+          [dataLabels]="workOrdersPriorityChart.dataLabels">
+        </apx-chart>
+      </div>
+    </div>
+
+    <!-- Row 2 — Inspections by status -->
+    <div class="chart-grid-1">
+      <div class="card">
+        <h3 class="chart-title">Inspections by Status</h3>
+        <apx-chart
+          [series]="inspectionsStatusChart.series"
+          [chart]="inspectionsStatusChart.chart"
+          [xaxis]="inspectionsStatusChart.xaxis"
+          [yaxis]="inspectionsStatusChart.yaxis"
+          [colors]="inspectionsStatusChart.colors"
+          [grid]="inspectionsStatusChart.grid"
+          [plotOptions]="inspectionsStatusChart.plotOptions"
+          [dataLabels]="inspectionsStatusChart.dataLabels">
+        </apx-chart>
+      </div>
+    </div>
+
+    <!-- Row 3 — Assets and Incidents per site -->
+    <div class="chart-grid-2">
+      <div class="card">
+        <h3 class="chart-title">Assets per Site</h3>
+        <apx-chart
+          [series]="assetsPerSiteChart.series"
+          [chart]="assetsPerSiteChart.chart"
+          [xaxis]="assetsPerSiteChart.xaxis"
+          [yaxis]="assetsPerSiteChart.yaxis"
+          [colors]="assetsPerSiteChart.colors"
+          [grid]="assetsPerSiteChart.grid"
+          [plotOptions]="assetsPerSiteChart.plotOptions"
+          [dataLabels]="assetsPerSiteChart.dataLabels">
+        </apx-chart>
+      </div>
+      <div class="card">
+        <h3 class="chart-title">Incidents per Site</h3>
+        <apx-chart
+          [series]="incidentsPerSiteChart.series"
+          [chart]="incidentsPerSiteChart.chart"
+          [xaxis]="incidentsPerSiteChart.xaxis"
+          [yaxis]="incidentsPerSiteChart.yaxis"
+          [colors]="incidentsPerSiteChart.colors"
+          [grid]="incidentsPerSiteChart.grid"
+          [plotOptions]="incidentsPerSiteChart.plotOptions"
+          [dataLabels]="incidentsPerSiteChart.dataLabels">
+        </apx-chart>
+      </div>
+    </div>
+  }
+</div>

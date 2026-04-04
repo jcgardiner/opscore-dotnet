@@ -17,6 +17,7 @@ export class App {
     { label: 'Personnel', path: '/personnel', icon: '👤' },
     { label: 'Inspections', path: '/inspections', icon: '✅' },
     { label: 'Work Orders', path: '/work-orders', icon: '📋' },
-    { label: 'Incidents', path: '/incidents', icon: '⚠️' }
+    { label: 'Incidents', path: '/incidents', icon: '⚠️' },
+    { label: 'Analytics', path: '/analytics', icon: '📈' }
   ];
 }
