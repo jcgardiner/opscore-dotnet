@@ -1,0 +1,6 @@
+@use '../../shared/shared' as *;
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+}

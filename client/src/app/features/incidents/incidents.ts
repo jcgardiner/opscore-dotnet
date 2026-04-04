@@ -1,12 +1,13 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { IncidentService } from '../../core/services/incident.service';
 import { Incident } from '../../core/models/incident.model';
-import { RouterLink } from '@angular/router';
+import { IncidentFormComponent } from './incident-form';
 
 @Component({
   selector: 'app-incidents',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, IncidentFormComponent],
   templateUrl: './incidents.html',
   styleUrl: './incidents.scss'
 })
@@ -17,6 +18,8 @@ export class IncidentsComponent implements OnInit {
   incidents: Incident[] = [];
   loading = true;
   error = '';
+  showForm = false;
+  selectedIncident: Incident | null = null;
 
   ngOnInit(): void {
     this.loadIncidents();
@@ -36,6 +39,29 @@ export class IncidentsComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  openAddForm(): void {
+    this.selectedIncident = null;
+    this.showForm = true;
+    this.cdr.detectChanges();
+  }
+
+  openEditForm(incident: Incident, event: Event): void {
+    event.stopPropagation();
+    this.selectedIncident = incident;
+    this.showForm = true;
+    this.cdr.detectChanges();
+  }
+
+  onFormSaved(): void {
+    this.showForm = false;
+    this.loadIncidents();
+  }
+
+  onFormCancelled(): void {
+    this.showForm = false;
+    this.cdr.detectChanges();
   }
 
   getSeverityClass(severity: string): string {
