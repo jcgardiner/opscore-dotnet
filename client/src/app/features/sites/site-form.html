@@ -1,0 +1,32 @@
+<app-modal [title]="site ? 'Edit Site' : 'Add Site'" [isOpen]="isOpen" (closed)="onCancel()">
+  <div class="form-group">
+    <label class="form-label">Site Name</label>
+    <input class="form-control" type="text" [(ngModel)]="formData.siteName" placeholder="Enter site name" />
+  </div>
+  <div class="form-group">
+    <label class="form-label">Sector Type</label>
+    <select class="form-control" [(ngModel)]="formData.sectorType">
+      <option value="">Select sector</option>
+      <option value="OilGas">Oil & Gas</option>
+      <option value="DoD">DoD</option>
+      <option value="Government">Government</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Location</label>
+    <input class="form-control" type="text" [(ngModel)]="formData.location" placeholder="City, State" />
+  </div>
+  <div class="form-group">
+    <label class="form-label">Status</label>
+    <select class="form-control" [(ngModel)]="formData.status">
+      <option value="Active">Active</option>
+      <option value="Inactive">Inactive</option>
+    </select>
+  </div>
+  <div class="form-actions">
+    <button class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+    <button class="btn btn-primary" (click)="onSubmit()" [disabled]="saving">
+      {{ saving ? 'Saving...' : (site ? 'Update Site' : 'Add Site') }}
+    </button>
+  </div>
+</app-modal>

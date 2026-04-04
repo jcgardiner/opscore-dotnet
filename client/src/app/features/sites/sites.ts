@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { SiteService } from '../../core/services/site.service';
 import { Site } from '../../core/models/site.model';
+import { SiteFormComponent } from './site-form';
 
 @Component({
   selector: 'app-sites',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, SiteFormComponent],
   templateUrl: './sites.html',
   styleUrl: './sites.scss'
 })
@@ -17,6 +18,8 @@ export class SitesComponent implements OnInit {
   sites: Site[] = [];
   loading = true;
   error = '';
+  showForm = false;
+  selectedSite: Site | null = null;
 
   ngOnInit(): void {
     this.loadSites();
@@ -36,6 +39,29 @@ export class SitesComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  openAddForm(): void {
+    this.selectedSite = null;
+    this.showForm = true;
+    this.cdr.detectChanges();
+  }
+
+  openEditForm(site: Site, event: Event): void {
+    event.stopPropagation();
+    this.selectedSite = site;
+    this.showForm = true;
+    this.cdr.detectChanges();
+  }
+
+  onFormSaved(): void {
+    this.showForm = false;
+    this.loadSites();
+  }
+
+  onFormCancelled(): void {
+    this.showForm = false;
+    this.cdr.detectChanges();
   }
 
   getSectorClass(sectorType: string): string {
