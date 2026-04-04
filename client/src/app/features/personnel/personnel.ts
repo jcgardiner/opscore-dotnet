@@ -1,12 +1,13 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { PersonnelService } from '../../core/services/personnel.service';
 import { Personnel } from '../../core/models/personnel.model';
-import { RouterLink } from '@angular/router';
+import { PersonnelFormComponent } from './personnel-form';
 
 @Component({
   selector: 'app-personnel',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, PersonnelFormComponent],
   templateUrl: './personnel.html',
   styleUrl: './personnel.scss'
 })
@@ -17,6 +18,8 @@ export class PersonnelComponent implements OnInit {
   personnel: Personnel[] = [];
   loading = true;
   error = '';
+  showForm = false;
+  selectedPerson: Personnel | null = null;
 
   ngOnInit(): void {
     this.loadPersonnel();
@@ -36,6 +39,29 @@ export class PersonnelComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  openAddForm(): void {
+    this.selectedPerson = null;
+    this.showForm = true;
+    this.cdr.detectChanges();
+  }
+
+  openEditForm(person: Personnel, event: Event): void {
+    event.stopPropagation();
+    this.selectedPerson = person;
+    this.showForm = true;
+    this.cdr.detectChanges();
+  }
+
+  onFormSaved(): void {
+    this.showForm = false;
+    this.loadPersonnel();
+  }
+
+  onFormCancelled(): void {
+    this.showForm = false;
+    this.cdr.detectChanges();
   }
 
   getClearanceClass(clearance: string): string {

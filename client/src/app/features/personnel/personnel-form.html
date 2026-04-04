@@ -1,0 +1,54 @@
+<app-modal [title]="person ? 'Edit Personnel' : 'Add Personnel'" [isOpen]="isOpen" (closed)="onCancel()">
+  <div class="form-group">
+    <label class="form-label">First Name</label>
+    <input class="form-control" type="text" [(ngModel)]="formData.firstName" placeholder="First name" />
+  </div>
+  <div class="form-group">
+    <label class="form-label">Last Name</label>
+    <input class="form-control" type="text" [(ngModel)]="formData.lastName" placeholder="Last name" />
+  </div>
+  <div class="form-group">
+    <label class="form-label">Email</label>
+    <input class="form-control" type="email" [(ngModel)]="formData.email" placeholder="email@example.com" />
+  </div>
+  <div class="form-group">
+    <label class="form-label">Role</label>
+    <select class="form-control" [(ngModel)]="formData.role">
+      <option value="">Select role</option>
+      <option value="Supervisor">Supervisor</option>
+      <option value="Inspector">Inspector</option>
+      <option value="Technician">Technician</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Clearance</label>
+    <select class="form-control" [(ngModel)]="formData.clearance">
+      <option value="None">None</option>
+      <option value="Confidential">Confidential</option>
+      <option value="Secret">Secret</option>
+      <option value="TopSecret">Top Secret</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Site</label>
+    <select class="form-control" [(ngModel)]="formData.siteId">
+      <option [value]="0">Select site</option>
+      @for (site of sites; track site.siteId) {
+        <option [value]="site.siteId">{{ site.siteName }}</option>
+      }
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Status</label>
+    <select class="form-control" [(ngModel)]="formData.status">
+      <option value="Active">Active</option>
+      <option value="Inactive">Inactive</option>
+    </select>
+  </div>
+  <div class="form-actions">
+    <button class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+    <button class="btn btn-primary" (click)="onSubmit()" [disabled]="saving">
+      {{ saving ? 'Saving...' : (person ? 'Update Personnel' : 'Add Personnel') }}
+    </button>
+  </div>
+</app-modal>

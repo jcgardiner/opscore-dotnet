@@ -4,6 +4,7 @@
       <h2 class="page-title">Personnel</h2>
       <p class="page-subtitle">Crew members and staff across all sites</p>
     </div>
+    <button class="btn btn-primary" (click)="openAddForm()">+ Add Personnel</button>
   </div>
 
   @if (loading) {
@@ -27,6 +28,7 @@
               <th>Clearance</th>
               <th>Status</th>
               <th>Since</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -47,11 +49,17 @@
                   </span>
                 </td>
                 <td>{{ person.createdDate | date:'mediumDate' }}</td>
+                <td>
+                  <button class="btn btn-secondary btn-sm"
+                    (click)="openEditForm(person, $event)">
+                    Edit
+                  </button>
+                </td>
               </tr>
             }
             @empty {
               <tr>
-                <td colspan="7" class="empty-row">No personnel found</td>
+                <td colspan="8" class="empty-row">No personnel found</td>
               </tr>
             }
           </tbody>
@@ -60,3 +68,10 @@
     </div>
   }
 </div>
+
+<app-personnel-form
+  [isOpen]="showForm"
+  [person]="selectedPerson"
+  (saved)="onFormSaved()"
+  (cancelled)="onFormCancelled()">
+</app-personnel-form>
