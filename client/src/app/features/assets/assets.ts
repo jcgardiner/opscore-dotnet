@@ -1,12 +1,13 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { AssetService } from '../../core/services/asset.service';
 import { Asset } from '../../core/models/asset.model';
-import { RouterLink } from '@angular/router';
+import { AssetFormComponent } from './asset-form';
 
 @Component({
   selector: 'app-assets',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, AssetFormComponent],
   templateUrl: './assets.html',
   styleUrl: './assets.scss'
 })
@@ -17,6 +18,8 @@ export class Assets implements OnInit {
   assets: Asset[] = [];
   loading = true;
   error = '';
+  showForm = false;
+  selectedAsset: Asset | null = null;
 
   ngOnInit(): void {
     this.loadAssets();
@@ -36,6 +39,29 @@ export class Assets implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  openAddForm(): void {
+    this.selectedAsset = null;
+    this.showForm = true;
+    this.cdr.detectChanges();
+  }
+
+  openEditForm(asset: Asset, event: Event): void {
+    event.stopPropagation();
+    this.selectedAsset = asset;
+    this.showForm = true;
+    this.cdr.detectChanges();
+  }
+
+  onFormSaved(): void {
+    this.showForm = false;
+    this.loadAssets();
+  }
+
+  onFormCancelled(): void {
+    this.showForm = false;
+    this.cdr.detectChanges();
   }
 
   getStatusClass(status: string): string {
