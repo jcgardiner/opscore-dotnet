@@ -1,0 +1,154 @@
+@use '../../shared/shared' as *;
+
+.back-link {
+  display: inline-block;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.header-badges {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+
+  &.alert-danger {
+    background-color: rgba(248, 113, 113, 0.15);
+    border: 1px solid var(--danger);
+    color: var(--danger);
+  }
+
+  &.alert-warning {
+    background-color: rgba(251, 191, 36, 0.15);
+    border: 1px solid var(--warning);
+    color: var(--warning);
+  }
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.info-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.info-value {
+  font-size: 1rem;
+  color: var(--text-primary);
+  font-weight: 500;
+
+  &.overdue { color: var(--danger); }
+  &.due-soon { color: var(--warning); }
+}
+
+.section-header {
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.description {
+  color: var(--text-primary);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-left: 1rem;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  position: relative;
+
+  &:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 20px;
+    bottom: -1.5rem;
+    width: 2px;
+    background-color: var(--border);
+  }
+}
+
+.timeline-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 2px;
+  background-color: var(--accent);
+
+  &.created { background-color: var(--accent); }
+  &.overdue-dot { background-color: var(--danger); }
+  &.due-soon-dot { background-color: var(--warning); }
+  &.due { background-color: var(--success); }
+}
+
+.timeline-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.timeline-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.timeline-date {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+
+  &.overdue { color: var(--danger); }
+}
+
+.timeline-meta {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.overdue { color: var(--danger); }
+.due-soon { color: var(--warning); }

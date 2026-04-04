@@ -31,7 +31,7 @@
           </thead>
           <tbody>
             @for (wo of workOrders; track wo.workOrderId) {
-              <tr>
+              <tr [routerLink]="['/work-orders', wo.workOrderId]" style="cursor: pointer">
                 <td>{{ wo.title }}</td>
                 <td>{{ wo.assetName }}</td>
                 <td>{{ wo.assignedToName }}</td>

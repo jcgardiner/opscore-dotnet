@@ -73,6 +73,36 @@ namespace server.Controllers
             return Ok(workOrder);
         }
 
+        // GET: api/workorders/5/details
+        [HttpGet("{id}/details")]
+        public async Task<ActionResult> GetWorkOrderDetails(int id)
+        {
+            var workOrder = await _context.WorkOrders
+                .Include(w => w.Asset)
+                .Include(w => w.AssignedTo)
+                .Where(w => w.WorkOrderId == id)
+                .Select(w => new WorkOrderDto
+                {
+                    WorkOrderId = w.WorkOrderId,
+                    Title = w.Title,
+                    Description = w.Description,
+                    Priority = w.Priority,
+                    Status = w.Status,
+                    CreatedDate = w.CreatedDate,
+                    DueDate = w.DueDate,
+                    AssetId = w.AssetId,
+                    AssetName = w.Asset.AssetName,
+                    AssignedToId = w.AssignedToId,
+                    AssignedToName = $"{w.AssignedTo.FirstName} {w.AssignedTo.LastName}"
+                })
+                .FirstOrDefaultAsync();
+
+            if (workOrder == null)
+                return NotFound();
+
+            return Ok(new { workOrder });
+        }
+
         // POST: api/workorders
         [HttpPost]
         public async Task<ActionResult<WorkOrderDto>> CreateWorkOrder(CreateWorkOrderDto dto)

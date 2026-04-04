@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
 import { WorkOrder, CreateWorkOrder, UpdateWorkOrder } from '../models/work-order.model';
+import { WorkOrderDetails } from '../models/work-order-details.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,10 @@ export class WorkOrderService {
 
   getById(id: number): Observable<WorkOrder> {
     return this.http.get<WorkOrder>(`${this.api.baseUrl}/workorders/${id}`);
+  }
+
+  getDetails(id: number): Observable<WorkOrderDetails> {
+    return this.http.get<WorkOrderDetails>(`${this.api.baseUrl}/workorders/${id}/details`);
   }
 
   create(dto: CreateWorkOrder): Observable<WorkOrder> {

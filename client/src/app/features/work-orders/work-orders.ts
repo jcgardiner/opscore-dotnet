@@ -2,10 +2,11 @@ import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WorkOrderService } from '../../core/services/work-order.service';
 import { WorkOrder } from '../../core/models/work-order.model';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-work-orders',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './work-orders.html',
   styleUrl: './work-orders.scss'
 })

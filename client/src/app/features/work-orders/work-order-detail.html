@@ -1,0 +1,100 @@
+<div class="page">
+  @if (loading) {
+    <div class="loading">Loading work order details...</div>
+  }
+
+  @if (error) {
+    <div class="error-banner">{{ error }}</div>
+  }
+
+  @if (!loading && details) {
+    <!-- Header -->
+    <div class="page-header">
+      <div>
+        <a routerLink="/work-orders" class="back-link">← Back to Work Orders</a>
+        <h2 class="page-title">{{ details.workOrder.title }}</h2>
+        <p class="page-subtitle">{{ details.workOrder.assetName }}</p>
+      </div>
+      <div class="header-badges">
+        <span class="badge" [class]="getPriorityClass(details.workOrder.priority)">
+          {{ details.workOrder.priority }}
+        </span>
+        <span class="badge" [class]="getStatusClass(details.workOrder.status)">
+          {{ details.workOrder.status }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Due Date Warning -->
+    @if (isOverdue()) {
+      <div class="alert alert-danger">⚠️ This work order is overdue!</div>
+    } @else if (isDueSoon()) {
+      <div class="alert alert-warning">⏰ This work order is due within 3 days!</div>
+    }
+
+    <!-- Info Cards -->
+    <div class="info-grid">
+      <div class="info-card">
+        <span class="info-label">Assigned To</span>
+        <span class="info-value">{{ details.workOrder.assignedToName }}</span>
+      </div>
+      <div class="info-card">
+        <span class="info-label">Asset</span>
+        <span class="info-value">{{ details.workOrder.assetName }}</span>
+      </div>
+      <div class="info-card">
+        <span class="info-label">Due Date</span>
+        <span class="info-value" [class.overdue]="isOverdue()" [class.due-soon]="isDueSoon()">
+          {{ details.workOrder.dueDate ? (details.workOrder.dueDate | date:'mediumDate') : '—' }}
+        </span>
+      </div>
+      <div class="info-card">
+        <span class="info-label">Created</span>
+        <span class="info-value">{{ details.workOrder.createdDate | date:'mediumDate' }}</span>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="card">
+      <div class="section-header">
+        <h3 class="section-title">Description</h3>
+      </div>
+      <p class="description">{{ details.workOrder.description }}</p>
+    </div>
+
+    <!-- Timeline -->
+    <div class="card">
+      <div class="section-header">
+        <h3 class="section-title">Timeline</h3>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot created"></div>
+          <div class="timeline-content">
+            <span class="timeline-label">Work Order Created</span>
+            <span class="timeline-date">{{ details.workOrder.createdDate | date:'medium' }}</span>
+            <span class="timeline-meta">Assigned to {{ details.workOrder.assignedToName }}</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" [class]="getStatusClass(details.workOrder.status)"></div>
+          <div class="timeline-content">
+            <span class="timeline-label">Current Status</span>
+            <span class="timeline-date">{{ details.workOrder.status }}</span>
+          </div>
+        </div>
+        @if (details.workOrder.dueDate) {
+          <div class="timeline-item">
+            <div class="timeline-dot" [class.overdue-dot]="isOverdue()" [class.due-soon-dot]="isDueSoon()" [class.due]="!isOverdue()"></div>
+            <div class="timeline-content">
+              <span class="timeline-label">Due Date</span>
+              <span class="timeline-date" [class.overdue]="isOverdue()">
+                {{ details.workOrder.dueDate | date:'medium' }}
+              </span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>
