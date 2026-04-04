@@ -31,7 +31,7 @@
           </thead>
           <tbody>
             @for (inspection of inspections; track inspection.inspectionId) {
-              <tr>
+              <tr [routerLink]="['/inspections', inspection.inspectionId]" style="cursor: pointer">
                 <td>{{ inspection.assetName }}</td>
                 <td>{{ inspection.inspectorName }}</td>
                 <td>{{ inspection.complianceStandard }}</td>

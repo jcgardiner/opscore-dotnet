@@ -2,10 +2,11 @@ import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InspectionService } from '../../core/services/inspection.service';
 import { Inspection } from '../../core/models/inspection.model';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-inspections',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './inspections.html',
   styleUrl: './inspections.scss'
 })

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
 import { Inspection, CreateInspection, UpdateInspection } from '../models/inspection.model';
+import { InspectionDetails } from '../models/inspection-details.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,10 @@ export class InspectionService {
 
   getById(id: number): Observable<Inspection> {
     return this.http.get<Inspection>(`${this.api.baseUrl}/inspections/${id}`);
+  }
+
+  getDetails(id: number): Observable<InspectionDetails> {
+    return this.http.get<InspectionDetails>(`${this.api.baseUrl}/inspections/${id}/details`);
   }
 
   create(dto: CreateInspection): Observable<Inspection> {

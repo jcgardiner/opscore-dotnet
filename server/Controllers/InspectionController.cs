@@ -73,6 +73,36 @@ namespace server.Controllers
             return Ok(inspection);
         }
 
+        // GET: api/inspections/5/details
+        [HttpGet("{id}/details")]
+        public async Task<ActionResult> GetInspectionDetails(int id)
+        {
+            var inspection = await _context.Inspections
+                .Include(i => i.Asset)
+                .Include(i => i.Inspector)
+                .Where(i => i.InspectionId == id)
+                .Select(i => new InspectionDto
+                {
+                    InspectionId = i.InspectionId,
+                    ScheduledDate = i.ScheduledDate,
+                    CompletedDate = i.CompletedDate,
+                    Status = i.Status,
+                    Notes = i.Notes,
+                    ComplianceStandard = i.ComplianceStandard,
+                    CreatedDate = i.CreatedDate,
+                    AssetId = i.AssetId,
+                    AssetName = i.Asset.AssetName,
+                    InspectorId = i.InspectorId,
+                    InspectorName = $"{i.Inspector.FirstName} {i.Inspector.LastName}"
+                })
+                .FirstOrDefaultAsync();
+
+            if (inspection == null)
+                return NotFound();
+
+            return Ok(new { inspection });
+        }
+
         // POST: api/inspections
         [HttpPost]
         public async Task<ActionResult<InspectionDto>> CreateInspection(CreateInspectionDto dto)
