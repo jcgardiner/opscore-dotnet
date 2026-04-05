@@ -4,6 +4,7 @@
       <h2 class="page-title">Inspections</h2>
       <p class="page-subtitle">Compliance inspections across all assets</p>
     </div>
+    <button class="btn btn-primary" (click)="openAddForm()">+ Schedule Inspection</button>
   </div>
 
   @if (loading) {
@@ -27,6 +28,7 @@
               <th>Completed</th>
               <th>Status</th>
               <th>Notes</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -43,11 +45,17 @@
                   </span>
                 </td>
                 <td class="notes">{{ inspection.notes || '—' }}</td>
+                <td>
+                  <button class="btn btn-secondary btn-sm"
+                    (click)="openEditForm(inspection, $event)">
+                    Edit
+                  </button>
+                </td>
               </tr>
             }
             @empty {
               <tr>
-                <td colspan="7" class="empty-row">No inspections found</td>
+                <td colspan="8" class="empty-row">No inspections found</td>
               </tr>
             }
           </tbody>
@@ -56,3 +64,10 @@
     </div>
   }
 </div>
+
+<app-inspection-form
+  [isOpen]="showForm"
+  [inspection]="selectedInspection"
+  (saved)="onFormSaved()"
+  (cancelled)="onFormCancelled()">
+</app-inspection-form>

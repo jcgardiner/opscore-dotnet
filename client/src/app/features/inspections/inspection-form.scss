@@ -1,0 +1,11 @@
+@use '../../shared/shared' as *;
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.date-time-row {
+  display: flex;
+  gap: 0.5rem;
+}

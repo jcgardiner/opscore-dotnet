@@ -1,12 +1,13 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { InspectionService } from '../../core/services/inspection.service';
 import { Inspection } from '../../core/models/inspection.model';
-import { RouterLink } from '@angular/router';
+import { InspectionFormComponent } from './inspection-form';
 
 @Component({
   selector: 'app-inspections',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, InspectionFormComponent],
   templateUrl: './inspections.html',
   styleUrl: './inspections.scss'
 })
@@ -17,6 +18,8 @@ export class InspectionsComponent implements OnInit {
   inspections: Inspection[] = [];
   loading = true;
   error = '';
+  showForm = false;
+  selectedInspection: Inspection | null = null;
 
   ngOnInit(): void {
     this.loadInspections();
@@ -36,6 +39,29 @@ export class InspectionsComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  openAddForm(): void {
+    this.selectedInspection = null;
+    this.showForm = true;
+    this.cdr.detectChanges();
+  }
+
+  openEditForm(inspection: Inspection, event: Event): void {
+    event.stopPropagation();
+    this.selectedInspection = inspection;
+    this.showForm = true;
+    this.cdr.detectChanges();
+  }
+
+  onFormSaved(): void {
+    this.showForm = false;
+    this.loadInspections();
+  }
+
+  onFormCancelled(): void {
+    this.showForm = false;
+    this.cdr.detectChanges();
   }
 
   getStatusClass(status: string): string {

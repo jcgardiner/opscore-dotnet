@@ -1,0 +1,56 @@
+<app-modal [title]="inspection ? 'Edit Inspection' : 'Schedule Inspection'" [isOpen]="isOpen" (closed)="onCancel()">
+  <div class="form-group">
+    <label class="form-label">Asset</label>
+    <select class="form-control" [(ngModel)]="formData.assetId">
+      <option [value]="0">Select asset</option>
+      @for (asset of assets; track asset.assetId) {
+        <option [value]="asset.assetId">{{ asset.assetName }}</option>
+      }
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Inspector</label>
+    <select class="form-control" [(ngModel)]="formData.inspectorId">
+      <option [value]="0">Select inspector</option>
+      @for (person of personnel; track person.personnelId) {
+        <option [value]="person.personnelId">{{ person.fullName }}</option>
+      }
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Compliance Standard</label>
+    <select class="form-control" [(ngModel)]="formData.complianceStandard">
+      <option value="">Select standard</option>
+      <option value="OSHA">OSHA</option>
+      <option value="EPA">EPA</option>
+      <option value="DoD">DoD</option>
+      <option value="ISO">ISO</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Status</label>
+    <select class="form-control" [(ngModel)]="formData.status">
+      <option value="Scheduled">Scheduled</option>
+      <option value="InProgress">In Progress</option>
+      <option value="Passed">Passed</option>
+      <option value="Failed">Failed</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Scheduled Date</label>
+    <div class="date-time-row">
+      <input class="form-control" type="date" [(ngModel)]="scheduledDateDate" />
+      <input class="form-control" type="time" [(ngModel)]="scheduledDateTime" />
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Notes</label>
+    <textarea class="form-control" [(ngModel)]="formData.notes" placeholder="Inspection notes" rows="3"></textarea>
+  </div>
+  <div class="form-actions">
+    <button class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+    <button class="btn btn-primary" (click)="onSubmit()" [disabled]="saving">
+      {{ saving ? 'Saving...' : (inspection ? 'Update Inspection' : 'Schedule Inspection') }}
+    </button>
+  </div>
+</app-modal>
