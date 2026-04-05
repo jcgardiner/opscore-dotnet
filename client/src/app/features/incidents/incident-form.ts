@@ -72,7 +72,7 @@ export class IncidentFormComponent implements OnInit, OnChanges {
         description: this.incident.description,
         severity: this.incident.severity,
         status: this.incident.status,
-        occurredDate: new Date(this.incident.occurredDate).toISOString().slice(0, 16),
+        occurredDate: this.toLocalDateTimeString(this.incident.occurredDate),
         siteId: this.incident.siteId,
         reportedById: this.incident.reportedById
       };
@@ -82,11 +82,17 @@ export class IncidentFormComponent implements OnInit, OnChanges {
         description: '',
         severity: 'Low',
         status: 'Open',
-        occurredDate: new Date().toISOString().slice(0, 16),
+        occurredDate: this.toLocalDateTimeString(new Date().toISOString()),
         siteId: 0,
         reportedById: 0
       };
     }
+  }
+
+  toLocalDateTimeString(dateStr: string): string {
+    const date = new Date(dateStr);
+    const offset = date.getTimezoneOffset() * 60000;
+    return new Date(date.getTime() - offset).toISOString().slice(0, 16);
   }
 
   onSubmit(): void {
