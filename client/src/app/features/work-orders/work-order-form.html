@@ -1,0 +1,57 @@
+<app-modal [title]="workOrder ? 'Edit Work Order' : 'Create Work Order'" [isOpen]="isOpen" (closed)="onCancel()">
+  <div class="form-group">
+    <label class="form-label">Title</label>
+    <input class="form-control" type="text" [(ngModel)]="formData.title" placeholder="Work order title" />
+  </div>
+  <div class="form-group">
+    <label class="form-label">Description</label>
+    <textarea class="form-control" [(ngModel)]="formData.description" placeholder="Describe the work required" rows="3"></textarea>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Asset</label>
+    <select class="form-control" [(ngModel)]="formData.assetId">
+      <option [value]="0">Select asset</option>
+      @for (asset of assets; track asset.assetId) {
+        <option [value]="asset.assetId">{{ asset.assetName }}</option>
+      }
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Assigned To</label>
+    <select class="form-control" [(ngModel)]="formData.assignedToId">
+      <option [value]="0">Select personnel</option>
+      @for (person of personnel; track person.personnelId) {
+        <option [value]="person.personnelId">{{ person.fullName }}</option>
+      }
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Priority</label>
+    <select class="form-control" [(ngModel)]="formData.priority">
+      <option value="Low">Low</option>
+      <option value="Medium">Medium</option>
+      <option value="High">High</option>
+      <option value="Critical">Critical</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Status</label>
+    <select class="form-control" [(ngModel)]="formData.status">
+      <option value="Open">Open</option>
+      <option value="InProgress">In Progress</option>
+      <option value="Completed">Completed</option>
+      <option value="Cancelled">Cancelled</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Due Date (optional)</label>
+    <input class="form-control" type="date" [(ngModel)]="dueDateDate" />
+    <input class="form-control" type="time" [(ngModel)]="dueDateTime" />
+  </div>
+  <div class="form-actions">
+    <button class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+    <button class="btn btn-primary" (click)="onSubmit()" [disabled]="saving">
+      {{ saving ? 'Saving...' : (workOrder ? 'Update Work Order' : 'Create Work Order') }}
+    </button>
+  </div>
+</app-modal>

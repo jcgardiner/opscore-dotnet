@@ -4,6 +4,7 @@
       <h2 class="page-title">Work Orders</h2>
       <p class="page-subtitle">Maintenance and repair tasks across all assets</p>
     </div>
+    <button class="btn btn-primary" (click)="openAddForm()">+ Create Work Order</button>
   </div>
 
   @if (loading) {
@@ -27,6 +28,7 @@
               <th>Status</th>
               <th>Due Date</th>
               <th>Created</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -47,11 +49,17 @@
                 </td>
                 <td>{{ wo.dueDate ? (wo.dueDate | date:'mediumDate') : '—' }}</td>
                 <td>{{ wo.createdDate | date:'mediumDate' }}</td>
+                <td>
+                  <button class="btn btn-secondary btn-sm"
+                    (click)="openEditForm(wo, $event)">
+                    Edit
+                  </button>
+                </td>
               </tr>
             }
             @empty {
               <tr>
-                <td colspan="7" class="empty-row">No work orders found</td>
+                <td colspan="8" class="empty-row">No work orders found</td>
               </tr>
             }
           </tbody>
@@ -60,3 +68,10 @@
     </div>
   }
 </div>
+
+<app-work-order-form
+  [isOpen]="showForm"
+  [workOrder]="selectedWorkOrder"
+  (saved)="onFormSaved()"
+  (cancelled)="onFormCancelled()">
+</app-work-order-form>
