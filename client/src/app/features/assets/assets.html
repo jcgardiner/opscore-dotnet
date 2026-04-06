@@ -45,11 +45,11 @@
                   </span>
                 </td>
                 <td>{{ asset.lastInspectedDate ? (asset.lastInspectedDate | date:'mediumDate') : '—' }}</td>
-                <td>
+                <td class="action-buttons">
                   <button class="btn btn-secondary btn-sm"
-                    (click)="openEditForm(asset, $event)">
-                    Edit
-                  </button>
+                    (click)="openEditForm(asset, $event)">Edit</button>
+                  <button class="btn btn-danger btn-sm"
+                    (click)="openDeleteConfirm(asset, $event)">Delete</button>
                 </td>
               </tr>
             }
@@ -71,3 +71,11 @@
   (saved)="onFormSaved()"
   (cancelled)="onFormCancelled()">
 </app-asset-form>
+
+<app-confirm-modal
+  [isOpen]="showConfirm"
+  [title]="'Delete Asset'"
+  [message]="'Are you sure you want to delete ' + (assetToDelete?.assetName ?? '') + '? This action cannot be undone.'"
+  (confirmed)="onDeleteConfirmed()"
+  (cancelled)="onDeleteCancelled()">
+</app-confirm-modal>

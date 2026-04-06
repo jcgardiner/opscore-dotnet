@@ -4,10 +4,11 @@ import { RouterLink } from '@angular/router';
 import { AssetService } from '../../core/services/asset.service';
 import { Asset } from '../../core/models/asset.model';
 import { AssetFormComponent } from './asset-form';
+import { ConfirmModalComponent } from '../../shared/components/confirm-modal';
 
 @Component({
   selector: 'app-assets',
-  imports: [CommonModule, RouterLink, AssetFormComponent],
+  imports: [CommonModule, RouterLink, AssetFormComponent, ConfirmModalComponent],
   templateUrl: './assets.html',
   styleUrl: './assets.scss'
 })
@@ -20,6 +21,8 @@ export class Assets implements OnInit {
   error = '';
   showForm = false;
   selectedAsset: Asset | null = null;
+  showConfirm = false;
+  assetToDelete: Asset | null = null;
 
   ngOnInit(): void {
     this.loadAssets();
@@ -42,6 +45,7 @@ export class Assets implements OnInit {
   }
 
   openAddForm(): void {
+    this.error = '';
     this.selectedAsset = null;
     this.showForm = true;
     this.cdr.detectChanges();
@@ -49,8 +53,42 @@ export class Assets implements OnInit {
 
   openEditForm(asset: Asset, event: Event): void {
     event.stopPropagation();
+    this.error = '';
     this.selectedAsset = asset;
     this.showForm = true;
+    this.cdr.detectChanges();
+  }
+
+  openDeleteConfirm(asset: Asset, event: Event): void {
+    event.stopPropagation();
+    this.error = '';
+    this.assetToDelete = asset;
+    this.showConfirm = true;
+    this.cdr.detectChanges();
+  }
+
+  onDeleteConfirmed(): void {
+    if (!this.assetToDelete) return;
+    this.assetService.delete(this.assetToDelete.assetId).subscribe({
+      next: () => {
+        this.showConfirm = false;
+        this.assetToDelete = null;
+        this.error = '';
+        this.loadAssets();
+      },
+      error: () => {
+        this.showConfirm = false;
+        this.assetToDelete = null;
+        this.error = 'Failed to delete asset. It may have related records.';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  onDeleteCancelled(): void {
+    this.showConfirm = false;
+    this.assetToDelete = null;
+    this.error = '';
     this.cdr.detectChanges();
   }
 
