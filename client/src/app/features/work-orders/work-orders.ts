@@ -4,10 +4,11 @@ import { RouterLink } from '@angular/router';
 import { WorkOrderService } from '../../core/services/work-order.service';
 import { WorkOrder } from '../../core/models/work-order.model';
 import { WorkOrderFormComponent } from './work-order-form';
+import { ConfirmModalComponent } from '../../shared/components/confirm-modal';
 
 @Component({
   selector: 'app-work-orders',
-  imports: [CommonModule, RouterLink, WorkOrderFormComponent],
+  imports: [CommonModule, RouterLink, WorkOrderFormComponent, ConfirmModalComponent],
   templateUrl: './work-orders.html',
   styleUrl: './work-orders.scss'
 })
@@ -20,6 +21,8 @@ export class WorkOrdersComponent implements OnInit {
   error = '';
   showForm = false;
   selectedWorkOrder: WorkOrder | null = null;
+  showConfirm = false;
+  workOrderToDelete: WorkOrder | null = null;
 
   ngOnInit(): void {
     this.loadWorkOrders();
@@ -42,6 +45,7 @@ export class WorkOrdersComponent implements OnInit {
   }
 
   openAddForm(): void {
+    this.error = '';
     this.selectedWorkOrder = null;
     this.showForm = true;
     this.cdr.detectChanges();
@@ -49,10 +53,45 @@ export class WorkOrdersComponent implements OnInit {
 
   openEditForm(workOrder: WorkOrder, event: Event): void {
     event.stopPropagation();
+    this.error = '';
     this.selectedWorkOrder = workOrder;
     this.showForm = true;
     this.cdr.detectChanges();
   }
+
+  openDeleteConfirm(workOrder: WorkOrder, event: Event): void {
+    event.stopPropagation();
+    this.error = '';
+    this.workOrderToDelete = workOrder;
+    this.showConfirm = true;
+    this.cdr.detectChanges();
+  }
+
+  onDeleteConfirmed(): void {
+    if (!this.workOrderToDelete) return;
+    this.workOrderService.delete(this.workOrderToDelete.workOrderId).subscribe({
+      next: () => {
+        this.showConfirm = false;
+        this.workOrderToDelete = null;
+        this.error = '';
+        this.loadWorkOrders();
+      },
+      error: () => {
+        this.showConfirm = false;
+        this.workOrderToDelete = null;
+        this.error = 'Failed to delete incident.';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  onDeleteCancelled(): void {
+    this.showConfirm = false;
+    this.workOrderToDelete = null;
+    this.error = '';
+    this.cdr.detectChanges();
+  }
+
 
   onFormSaved(): void {
     this.showForm = false;
