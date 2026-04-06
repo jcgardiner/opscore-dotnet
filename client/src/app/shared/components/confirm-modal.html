@@ -1,0 +1,13 @@
+@if (isOpen) {
+  <div class="modal-overlay" (click)="cancelled.emit()">
+    <div class="confirm-container" (click)="$event.stopPropagation()">
+      <div class="confirm-icon">⚠️</div>
+      <h3 class="confirm-title">{{ title }}</h3>
+      <p class="confirm-message">{{ message }}</p>
+      <div class="confirm-actions">
+        <button class="btn btn-secondary" (click)="cancelled.emit()">Cancel</button>
+        <button class="btn btn-danger" (click)="confirmed.emit()">{{ confirmLabel }}</button>
+      </div>
+    </div>
+  </div>
+}
