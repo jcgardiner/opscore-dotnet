@@ -49,11 +49,11 @@
                   </span>
                 </td>
                 <td>{{ person.createdDate | date:'mediumDate' }}</td>
-                <td>
+                <td class="action-buttons">
                   <button class="btn btn-secondary btn-sm"
-                    (click)="openEditForm(person, $event)">
-                    Edit
-                  </button>
+                    (click)="openEditForm(person, $event)">Edit</button>
+                  <button class="btn btn-danger btn-sm"
+                    (click)="openDeleteConfirm(person, $event)">Delete</button>
                 </td>
               </tr>
             }
@@ -75,3 +75,11 @@
   (saved)="onFormSaved()"
   (cancelled)="onFormCancelled()">
 </app-personnel-form>
+
+<app-confirm-modal
+  [isOpen]="showConfirm"
+  [title]="'Delete Personnel'"
+  [message]="'Are you sure you want to delete ' + (personToDelete?.fullName ?? '') + '? This action cannot be undone.'"
+  (confirmed)="onDeleteConfirmed()"
+  (cancelled)="onDeleteCancelled()">
+</app-confirm-modal>
