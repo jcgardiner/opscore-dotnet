@@ -4,10 +4,11 @@ import { RouterLink } from '@angular/router';
 import { IncidentService } from '../../core/services/incident.service';
 import { Incident } from '../../core/models/incident.model';
 import { IncidentFormComponent } from './incident-form';
+import { ConfirmModalComponent } from '../../shared/components/confirm-modal';
 
 @Component({
   selector: 'app-incidents',
-  imports: [CommonModule, RouterLink, IncidentFormComponent],
+  imports: [CommonModule, RouterLink, IncidentFormComponent, ConfirmModalComponent],
   templateUrl: './incidents.html',
   styleUrl: './incidents.scss'
 })
@@ -20,6 +21,8 @@ export class IncidentsComponent implements OnInit {
   error = '';
   showForm = false;
   selectedIncident: Incident | null = null;
+  showConfirm = false;
+  incidentToDelete: Incident | null = null;
 
   ngOnInit(): void {
     this.loadIncidents();
@@ -42,6 +45,7 @@ export class IncidentsComponent implements OnInit {
   }
 
   openAddForm(): void {
+    this.error = '';
     this.selectedIncident = null;
     this.showForm = true;
     this.cdr.detectChanges();
@@ -49,8 +53,42 @@ export class IncidentsComponent implements OnInit {
 
   openEditForm(incident: Incident, event: Event): void {
     event.stopPropagation();
+    this.error = '';
     this.selectedIncident = incident;
     this.showForm = true;
+    this.cdr.detectChanges();
+  }
+
+  openDeleteConfirm(incident: Incident, event: Event): void {
+    event.stopPropagation();
+    this.error = '';
+    this.incidentToDelete = incident;
+    this.showConfirm = true;
+    this.cdr.detectChanges();
+  }
+
+  onDeleteConfirmed(): void {
+    if (!this.incidentToDelete) return;
+    this.incidentService.delete(this.incidentToDelete.incidentId).subscribe({
+      next: () => {
+        this.showConfirm = false;
+        this.incidentToDelete = null;
+        this.error = '';
+        this.loadIncidents();
+      },
+      error: () => {
+        this.showConfirm = false;
+        this.incidentToDelete = null;
+        this.error = 'Failed to delete incident.';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  onDeleteCancelled(): void {
+    this.showConfirm = false;
+    this.incidentToDelete = null;
+    this.error = '';
     this.cdr.detectChanges();
   }
 
