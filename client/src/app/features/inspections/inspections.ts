@@ -4,10 +4,11 @@ import { RouterLink } from '@angular/router';
 import { InspectionService } from '../../core/services/inspection.service';
 import { Inspection } from '../../core/models/inspection.model';
 import { InspectionFormComponent } from './inspection-form';
+import { ConfirmModalComponent } from '../../shared/components/confirm-modal';
 
 @Component({
   selector: 'app-inspections',
-  imports: [CommonModule, RouterLink, InspectionFormComponent],
+  imports: [CommonModule, RouterLink, InspectionFormComponent, ConfirmModalComponent],
   templateUrl: './inspections.html',
   styleUrl: './inspections.scss'
 })
@@ -20,6 +21,8 @@ export class InspectionsComponent implements OnInit {
   error = '';
   showForm = false;
   selectedInspection: Inspection | null = null;
+  showConfirm = false;
+  inspectionToDelete: Inspection | null = null;
 
   ngOnInit(): void {
     this.loadInspections();
@@ -42,6 +45,7 @@ export class InspectionsComponent implements OnInit {
   }
 
   openAddForm(): void {
+    this.error = '';
     this.selectedInspection = null;
     this.showForm = true;
     this.cdr.detectChanges();
@@ -49,8 +53,42 @@ export class InspectionsComponent implements OnInit {
 
   openEditForm(inspection: Inspection, event: Event): void {
     event.stopPropagation();
+    this.error = '';
     this.selectedInspection = inspection;
     this.showForm = true;
+    this.cdr.detectChanges();
+  }
+
+    openDeleteConfirm(inspection: Inspection, event: Event): void {
+    event.stopPropagation();
+    this.error = '';
+    this.inspectionToDelete = inspection;
+    this.showConfirm = true;
+    this.cdr.detectChanges();
+  }
+
+  onDeleteConfirmed(): void {
+    if (!this.inspectionToDelete) return;
+    this.inspectionService.delete(this.inspectionToDelete.inspectionId).subscribe({
+      next: () => {
+        this.showConfirm = false;
+        this.inspectionToDelete = null;
+        this.error = '';
+        this.loadInspections();
+      },
+      error: () => {
+        this.showConfirm = false;
+        this.inspectionToDelete = null;
+        this.error = 'Failed to delete incident.';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  onDeleteCancelled(): void {
+    this.showConfirm = false;
+    this.inspectionToDelete = null;
+    this.error = '';
     this.cdr.detectChanges();
   }
 
