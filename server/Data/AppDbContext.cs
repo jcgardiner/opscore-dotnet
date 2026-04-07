@@ -15,6 +15,7 @@ namespace server.Data
         public DbSet<WorkOrder> WorkOrders { get; set; }
         public DbSet<Incident> Incidents { get; set; }
         public DbSet<Document> Documents { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
