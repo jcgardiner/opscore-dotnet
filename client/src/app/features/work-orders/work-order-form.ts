@@ -110,10 +110,6 @@ export class WorkOrderFormComponent implements OnInit, OnChanges {
     return new Date(date.getTime() - offset).toISOString().slice(0, 16);
   }
 
-  logDate(val: any): void {
-    console.log('date changed:', val);
-  }
-
   onSubmit(): void {
     if (!this.formData.title || !this.formData.assetId || !this.formData.assignedToId) return;
 
