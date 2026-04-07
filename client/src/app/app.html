@@ -1,19 +1,32 @@
-<div class="app-shell">
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <h1 class="app-title">OpsCore</h1>
-      <p class="app-subtitle">Field Operations</p>
-    </div>
-    <nav class="sidebar-nav">
-      @for (item of navItems; track item.path) {
-        <a [routerLink]="item.path" routerLinkActive="active" class="nav-item">
-          <span class="nav-icon">{{ item.icon }}</span>
-          <span class="nav-label">{{ item.label }}</span>
-        </a>
+@if (isAuthPage) {
+  <router-outlet />
+} @else {
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h1 class="app-title">OpsCore</h1>
+        <p class="app-subtitle">Field Operations</p>
+      </div>
+      <nav class="sidebar-nav">
+        @for (item of navItems; track item.path) {
+          <a [routerLink]="item.path" routerLinkActive="active" class="nav-item">
+            <span class="nav-icon">{{ item.icon }}</span>
+            <span class="nav-label">{{ item.label }}</span>
+          </a>
+        }
+      </nav>
+      @if (currentUser) {
+        <div class="sidebar-footer">
+          <div class="user-info">
+            <span class="user-name">{{ currentUser.fullName }}</span>
+            <span class="user-role">{{ currentUser.role }}</span>
+          </div>
+          <button class="logout-btn" (click)="logout()">Sign Out</button>
+        </div>
       }
-    </nav>
-  </aside>
-  <main class="main-content">
-    <router-outlet />
-  </main>
-</div>
+    </aside>
+    <main class="main-content">
+      <router-outlet />
+    </main>
+  </div>
+}

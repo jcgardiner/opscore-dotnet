@@ -1,31 +1,3 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-:root {
-  --primary: #1a1f2e;
-  --secondary: #252b3b;
-  --accent: #4f8ef7;
-  --accent-hover: #3a7af0;
-  --text-primary: #f0f4ff;
-  --text-secondary: #8892a4;
-  --border: #2e3548;
-  --success: #34d399;
-  --warning: #fbbf24;
-  --danger: #f87171;
-  --card-bg: #1e2435;
-}
-
-body {
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  background-color: var(--primary);
-  color: var(--text-primary);
-  height: 100vh;
-  overflow: hidden;
-}
-
 .app-shell {
   display: flex;
   height: 100vh;
@@ -67,6 +39,7 @@ body {
   flex-direction: column;
   gap: 0.25rem;
   padding: 0 0.75rem;
+  flex: 1;
 }
 
 .nav-item {
@@ -103,4 +76,45 @@ body {
   overflow-y: auto;
   padding: 2rem;
   background-color: var(--primary);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.75rem;
+}
+
+.user-name {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.user-role {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-radius: 8px;
+  color: var(--danger);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba(248, 113, 113, 0.2);
+  }
 }
