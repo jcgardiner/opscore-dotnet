@@ -416,3 +416,8 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+server/logs.zip
+server/publish.zip
+server/publish/
+server/logs/
