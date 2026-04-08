@@ -33,9 +33,12 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        policy.WithOrigins(
+            "http://localhost:4200",
+            "https://mango-hill-06ad2af1e.1.azurestaticapps.net"
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod();
     });
 });
 
@@ -56,10 +59,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-// Seed database
+// Run migrations and seed database
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    context.Database.Migrate();
     await SeedData.InitializeAsync(context);
 }
 
