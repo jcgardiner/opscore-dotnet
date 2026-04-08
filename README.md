@@ -103,7 +103,25 @@ All list endpoints support full CRUD. Detail endpoints (`/api/{entity}/{id}/deta
 
 ## Screenshots
 
-*Coming soon*
+## Screenshots
+
+### Login
+![Login](screenshots/01-login.png)
+
+### Dashboard
+![Dashboard](screenshots/02-dashboard.png)
+
+### Sites
+![Sites](screenshots/03-sites.png)
+
+### Asset Detail
+![Asset Detail](screenshots/04-asset-detail.png)
+
+### Analytics
+![Analytics](screenshots/05-analytics.png)
+
+### Incident Form
+![Incident Form](screenshots/06-incident-form.png)
 
 ## Related Projects
 
