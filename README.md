@@ -2,6 +2,16 @@
 
 A full-stack web application for managing field operations across Defense, Government, and Oil & Gas sectors. Built as a portfolio project demonstrating enterprise-grade architecture with real-world domain knowledge.
 
+## Live Demo
+
+🌐 **[https://mango-hill-06ad2af1e.1.azurestaticapps.net](https://mango-hill-06ad2af1e.1.azurestaticapps.net)**
+
+**Demo credentials:**
+- Email: `demo@opscore.com`
+- Password: `OpsCore123!`
+
+> Hosted on Azure Static Web Apps (frontend) + Azure App Service (API) + Azure SQL Database
+
 ## Tech Stack
 
 | Layer | Technology |
@@ -100,8 +110,6 @@ opscore-dotnet/
 | GET | /api/analytics/overview | Analytics data for charts |
 
 All list endpoints support full CRUD. Detail endpoints (`/api/{entity}/{id}/details`) return the entity with all related records.
-
-## Screenshots
 
 ## Screenshots
 
