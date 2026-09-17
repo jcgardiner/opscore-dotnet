@@ -2,9 +2,6 @@
 
 A full-stack web application for managing field operations across Defense, Government, and Oil & Gas sectors. Built as a portfolio project demonstrating enterprise-grade architecture with real-world domain knowledge.
 
-## Live Demo
-> Hosted on Azure Static Web Apps (frontend) + Azure App Service (API) + Azure SQL Database
-
 ## Tech Stack
 
 | Layer | Technology |
